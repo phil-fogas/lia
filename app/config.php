@@ -2,7 +2,7 @@
 
 $config=[
   "connection" => [
-    "dbname" => "lapassiolapasion",
+    "dbname" => "lia",
     "host" => "localhost",
     "user" => "root",
     "password" =>  ""
