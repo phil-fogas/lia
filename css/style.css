@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+.bulle {
+    color: var(--black);
+    background-color: var(--white);
+    padding:1rem;
+    position: relative;
+    -moz-border-radius:  50% / 10%;
+    -webkit-border-radius:  50% / 10%;
+    border-radius:  50% / 10%;
+    min-width: 40%;
+    max-width: 90%;
+    display:block;
+    margin:auto;
+    text-shadow: 1px 1px 2px var(--ciel);
+}
+.bulle::after{
+    content:""; 
+    border-left:30px solid transparent;
+    border-right:30px solid transparent;
+    border-top: 40px solid var(--white);
+    position: absolute;
+  }
+.bulle a{
+    color: var(--black);
+  }
+

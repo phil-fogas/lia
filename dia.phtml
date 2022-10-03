@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="fr-fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<body class="">
+
+  <article class="container ">
+   
+    <div class="text-center">
+
+      <div id="bulle" class="bulle fs-4 shadow p-3 mb-5 rounded border border-primary text-wrap">
+
+        <?php if (!empty($res['txt'])) : ?>
+          <?= $res['txt'] ?>
+        <?php endif ?>
+      </div>
+      <div class="text-center">
+        <img id='vlia' src="img/<?= $res['img'] ?? 'neutre.png' ?>" class="rounded">
+      </div>
+    </div>
+
+    <form action="#" method="post" class="form-group" id="ques">
+
+      <div class="mb-3">
+        <label for="res" class="form-label">dis moi quelque chose:</label>
+        <input type="text" name="res" id="res" class="form-control" placeholder="poser votre question ici " required autofocus><span></span>
+
+      </div>
+      <div class="mb-3">
+        <button id="ria" type="submit" class="btn btn-primary" name="lia"> Envoyer</button>
+      </div>
+
+    </form>
+
+
+
+
+  </article>
+
+  <script src="./js/lia.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
