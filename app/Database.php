@@ -26,7 +26,7 @@ class Database
             if (!empty($this->hostdb)) {
 
 
-                if ($_SERVER['SERVER_ADDR'] === ":::1" || $_SERVER['SERVER_ADDR'] === "127:0:0:1" || $_SERVER['SERVER_NAME'] === "localhost" || $_SERVER['SERVER_NAME'] === "lapassion") {
+                if ($_SERVER['SERVER_ADDR'] === ":::1" || $_SERVER['SERVER_ADDR'] === "127:0:0:1" || $_SERVER['SERVER_NAME'] === "localhost") {
                     $this->hostdb = $config['connection']['host'];
                     $this->namedb = $config['connection']['dbname'];
                     $this->userdb = $config['connection']['user'];
@@ -59,10 +59,10 @@ class Database
         }
     }
 
-    public function __destruct()  
+    public function __destruct()
     {
-        
-        $this->pdo=null;
+
+        $this->pdo = null;
     }
 
     public function query(string $sql, array $params = []): array
@@ -154,10 +154,10 @@ class Database
         $this->pdo = $pdo;
     }
 
-    function close() {
-       
-        $this->pdo=null;
-        $query=null;
-        
-      }
+    function close()
+    {
+
+        $this->pdo = null;
+        $query = null;
+    }
 }

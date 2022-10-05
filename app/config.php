@@ -8,9 +8,9 @@ $config=[
     "password" =>  ""
   ],
   "connec" => [
-    "dbname" => " ",
-    "host" => " ",
-    "user" =>  " ",
-    "password" => " "
+    "dbname" => "lapassiolapasion",
+    "host" => "localhost",
+    "user" =>  "root",
+    "password" => ""
   ]
   ];

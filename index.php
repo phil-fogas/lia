@@ -10,7 +10,7 @@ require_once 'app/Lia.php';
 $dlia = new Lia();
 
 if (!empty($_POST)) {
-  //$res = $dlia->Dec($_POST['res']);
+  $res = $dlia->Dec($_POST['res']);
  
 }
 
