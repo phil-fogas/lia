@@ -5,13 +5,38 @@ declare(strict_types=1);
 require_once 'app/Database.php';
 
 //use Database;
+/**
+* @author fogas fogasy 
+* @version 1.3
+* @access public
+ */
 
 class lia extends Database
 {
-
-  private $txt;
-  private $str;
-  private $monNom = 'lia';
+  
+  /**
+   * txt
+   *
+   * @var mixed
+   */
+  private $txt;  
+  /**
+   * str
+   *
+   * @var mixed
+   */
+  private $str;  
+  /**
+   * monNom
+   *
+   * @var string
+   */
+  private $monNom = 'lia';  
+  /**
+   * exp
+   *
+   * @var mixed
+   */
   protected $exp;
 
   public function __construct()
@@ -19,16 +44,30 @@ class lia extends Database
     parent::__construct();
     if (session_status() == PHP_SESSION_NONE) {
       session_start();
-      session_id("lia");
+      //session_id("lia");
     }
   }
+  
+  
 
-  public function jsDec(string $str)
+  /**
+   * jsDec
+   *
+   * @param  mixed $str
+   * @return string
+   */
+  public function jsDec(string $str): string
   {
     $res = $this->Dec($str);
     return json_encode($res);
   }
-
+  
+  /**
+   * Dec
+   *
+   * @param  mixed $str
+   * @return array
+   */
   public function Dec(string $str): array
   {
 
@@ -125,7 +164,15 @@ class lia extends Database
       }
     }
 
+    foreach (['connais tu'] as $value) {
 
+
+      if (strpos($this->str, $value) !== false) {
+
+        $val = preg_replace('#' . $value . ' #', '', $this->str);
+        $this->txt .= $this->ConnaiTu($val);
+      }
+    }
 
     if (empty($this->txt)) {
       $dv = ['le', 'la'];
@@ -140,14 +187,10 @@ class lia extends Database
       }
     }
 
-
-
     if (strpos($this->str, 'comment va tu') !== false) {
       $str = preg_replace('#comment va tu #', '', $this->str);
       $this->txt .= $this->vaTu();
     }
-
-
 
     if (!empty($this->txt) && empty($this->exp)) {
 
@@ -158,12 +201,23 @@ class lia extends Database
       $this->txt = $this->MemoirUser();
     }
 
-    var_dump($_SESSION);
-    return ['txt' => $this->txt, 'img' => $this->exp];
-  }
+    if (!empty($_SESSION['question'])) {
+      $ques = ($_SESSION['question']);
+    } else {
+      $ques = '';
+    }
 
+    return ['txt' => $this->txt, 'img' => $this->exp, 'ques' => $ques];
+  }
+  
+  /**
+   * MemoirUser
+   *
+   * @return string
+   */
   private function MemoirUser(): ?string
   {
+    //pour mémoriée si une question a ete déja posée
     if (!empty($_SESSION['reponse'][$this->str])) {
       if ($_SESSION['reponse'][$this->str] === $this->txt) {
         $r[] = "re- ";
@@ -182,7 +236,13 @@ class lia extends Database
       return $this->txt;
     }
   }
-
+  
+  /**
+   * Genre
+   *
+   * @param  mixed $txt
+   * @return int
+   */
   private function Genre(string $txt): int
   {
     ## pour determinee si feminin = 2 ou masculin = 1
@@ -191,7 +251,7 @@ class lia extends Database
     $letter3 = substr($txt,  -3);
     $letter4 = substr($txt,  -4);
 
-    $genre = 1;
+    $genre = 0;
     if ($letter1 === 'e' || $letter1 === 'a') {
       $genre = 2;
     }
@@ -214,7 +274,13 @@ class lia extends Database
 
     return $genre;
   }
-
+  
+  /**
+   * Appelle
+   *
+   * @param  mixed $txt
+   * @return string
+   */
   private function Appelle(string $txt): ?string
   {
     # exemple de prenon apres elle sera relier a une base
@@ -240,19 +306,24 @@ class lia extends Database
         $_SESSION['user']['prenom'] = $txt;
         break;
     }
-    
-    if(!empty($_SESSION['question'])){
-      var_dump($_SESSION['question']);
-     if($_SESSION['question']=="je m'appelle "){
-      unset($_SESSION['question']);
-     }
- 
+
+    if (!empty($_SESSION['question'])) {
+
+      if ($_SESSION['question'] == "je m'appelle") {
+        unset($_SESSION['question']);
+      }
     }
     return 'jolie prénom ' . $this->Sex() . " ";
   }
-
+  
+  /**
+   * Sex
+   *
+   * @return string
+   */
   private function Sex(): string
   {
+    // pour savoir 
     if (!empty($_SESSION['user']['sex'])) {
       if ($_SESSION['user']['sex'] == 1) {
         $sex = "masculin";
@@ -264,12 +335,19 @@ class lia extends Database
     }
     return $sex;
   }
-
+  
+  /**
+   * Calcul
+   *
+   * @param  mixed $txt
+   * @return float
+   */
   private function Calcul(string $txt): ?float
   {
+    // la calculatrice
     $txt = preg_replace('# #', '', $txt);
     preg_match_all('/-?(\d+)/', $txt, $chiffes);
-    preg_match_all('/[-|+|*|\/|plus|mois|multiplie|divise|diviser par|multiplier par]/', $txt, $signe, PREG_UNMATCHED_AS_NULL);
+    preg_match_all('/[-|+|*|\/|plus|mois|multiplie|divise]/', $txt, $signe, PREG_UNMATCHED_AS_NULL);
     $op = floatval($chiffes[0]);
 
     for ($i = 1; $i < count($chiffes[0]); $i++) {
@@ -303,7 +381,13 @@ class lia extends Database
     }
   }
 
-
+  
+  /**
+   * ConnaiTu
+   *
+   * @param  mixed $txt
+   * @return string
+   */
   private function ConnaiTu(string $txt): ?string
   {
 
@@ -311,10 +395,11 @@ class lia extends Database
 
       case 'la-passion':
       case 'la-passion.fr':
-      case 'passion':
         return 'le site de mon créateur <a href="https://la-passion.fr/">la-passion.fr</a>';
         break;
-
+      case $_SESSION['user']['prenom']:
+        return 'déja je connais toi';
+        break;
       default:
         return null; # apre connection base
         break;
@@ -322,7 +407,13 @@ class lia extends Database
 
     //return $str;
   }
-
+  
+  /**
+   * TuEs
+   *
+   * @param  mixed $txt
+   * @return string
+   */
   private function TuEs(string $txt): ?string
   {
 
@@ -355,7 +446,13 @@ class lia extends Database
         break;
     }
   }
-
+  
+  /**
+   * AimeTu
+   *
+   * @param  mixed $txt
+   * @return string
+   */
   private function AimeTu(string $txt): ?string
   {
 
@@ -392,7 +489,12 @@ class lia extends Database
         break;
     }
   }
-
+  
+  /**
+   * vaTu
+   *
+   * @return string
+   */
   private function vaTu(): string
   {
     $this->Expretion('joyeuse');
@@ -404,7 +506,13 @@ class lia extends Database
     $txt = $tex[$p];
     return $txt;
   }
-
+  
+  /**
+   * Question
+   *
+   * @param  mixed $i
+   * @return string
+   */
   private function Question(int $i = null): ?string
   {
 
@@ -427,7 +535,13 @@ class lia extends Database
 
     return $txt;
   }
-
+  
+  /**
+   * Reponse
+   *
+   * @param  mixed $i
+   * @return string
+   */
   private function Reponse(int $i = null): ?string
   {
 
@@ -441,16 +555,22 @@ class lia extends Database
     return $txt;
   }
 
-
+  
+  /**
+   * Heure
+   *
+   * @return string
+   */
   private function Heure(): string
   {
+    // pour donnée heurre
     date_default_timezone_set('UTC');
     $heure = round(date("H") + (date("z") / 120), 0);
     $minutes = date('i');
 
     if ($minutes == 0) {
+      //message a chaque changement d'heurre
       $tex[] = 'les cloches';
-
       $tex[] = 'Les trompettes';
       $ll = count($tex) - 1;
       $p = rand(0, $ll);
@@ -458,13 +578,19 @@ class lia extends Database
     }
 
     if ($minutes == 15 || $minutes == 30 || $minutes == 45) {
-
+##message pour les quart d'heurre
       return  'horloge sonne ' . $heure . ' heure' . $minutes . '';
     }
     return  'il est ' . $heure . ' heure ' . $minutes . '';
   }
 
-
+  
+  /**
+   * QuiEst
+   *
+   * @param  mixed $str
+   * @return string
+   */
   private function QuiEst(string $str): ?string
   {
 
@@ -515,7 +641,13 @@ class lia extends Database
         break;
     }
   }
-
+  
+  /**
+   * Expretion
+   *
+   * @param  mixed $exp
+   * @return string
+   */
   private function Expretion(string $exp = null): string
   {
 
@@ -584,19 +716,29 @@ class lia extends Database
 
     return $this->exp = $img;
   }
-
+  
+  /**
+   * QuiEstTu
+   *
+   * @return string
+   */
   private function QuiEstTu(): string
   {
     $this->Expretion('heureuse');
     return 'je m\'apelle ' . $this->monNom . ', pour <span class="fw-bold">L</span>\'<span class="fw-bold">I</span>ntiligente <span class="fw-bold">A</span>pli... , je suis la pour vous aider';
   }
 
-
+  
+  /**
+   * Salutation
+   *
+   * @param  mixed $value
+   * @return string
+   */
   private function Salutation(string $value): string
   {
     # salutation selon l'heurre de la journée
     $this->Expretion('heureuse');
-
 
     $this->str = preg_replace('/^' . $value . ' /', '', $this->str);
     $mess_heure = 'salut';
@@ -621,7 +763,7 @@ class lia extends Database
     }
 
     if (strpos($this->str, $this->monNom) !== false) {
-      $_SESSION['question'] = "je m'appelle ";
+      $_SESSION['question'] = "je m'appelle";
       return $mess_heure . ' a toi, comment tu t\'appelle ';
     } else {
 
@@ -635,7 +777,12 @@ class lia extends Database
       }
     }
   }
-
+  
+  /**
+   * Prenom
+   *
+   * @return string
+   */
   public function Prenom(): string
   {
     if (!empty($_SESSION['user']['prenom'])) {
@@ -644,7 +791,13 @@ class lia extends Database
       return "toi";
     }
   }
-
+  
+  /**
+   * noAccent
+   *
+   * @param  mixed $str
+   * @return string
+   */
   private function noAccent(string $str): string
   {
     $str = htmlentities($str, ENT_NOQUOTES, 'utf-8');

@@ -1,21 +1,32 @@
 'use strict';
 
-function res() {
+function res(e) {
 
   e.preventDefault();
 
-  var form = new FormData(document.getElementById('ques'));
+  let form = new FormData(document.getElementById('ques'));
 
-  fetch(`./res.php`, { method: 'POST', body: form })
-    .then(function (response) {
-      //console.log(response.json());
+  fetch(`res.php`, { method: 'POST', body: form })
+    .then(
+      response => {
+        return response.json();
+      }
+    )
+    .then(data => {
+      if (data.txt) {
+        // console.log(data);
+        document.querySelector('.bulle').innerHTML = data.txt;
+        document.getElementById('vlia').src = './img/' + data.img;
+        document.getElementById('res').value = data.ques;
+      } else {
+        document.querySelector('.bulle').innerHTML = '???';
+        document.getElementById('vlia').src = './img/neutre.png';
+        document.getElementById('res').value =data.ques;
+      }
 
-      return response.json();
-    }).then(function (data) {
-      //console.log(data);
-      document.querySelector('.bulle').innerHTML = data.txt;
-      document.getElementById('vlia').src = './img/' + data.img;
-    });
+    })
+    .catch(error => { document.querySelector('.bulle').innerHTML ="erreure";})
+    ;
 }
 
 document.addEventListener('DOMContentLoaded', function () {

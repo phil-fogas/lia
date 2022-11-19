@@ -3,6 +3,9 @@ lia agent conversationnel
 
 exemple d'un agent conversationnel
 
+version 3
+mise en place apel en ajax avec feth
+
 version 2
 mise en place d'une memoire coter utilisateur
 recupération des pharse déja dit 
