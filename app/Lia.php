@@ -6,32 +6,32 @@ require_once 'app/Database.php';
 
 //use Database;
 /**
-* @author fogas fogasy 
-* @version 1.3
-* @access public
+ * @author fogas fogasy 
+ * @version 1.3
+ * @access public
  */
 
 class lia extends Database
 {
-  
+
   /**
    * txt
    *
    * @var mixed
    */
-  private $txt;  
+  private $txt;
   /**
    * str
    *
    * @var mixed
    */
-  private $str;  
+  private $str;
   /**
    * monNom
    *
    * @var string
    */
-  private $monNom = 'lia';  
+  private $monNom = 'lia';
   /**
    * exp
    *
@@ -47,8 +47,8 @@ class lia extends Database
       //session_id("lia");
     }
   }
-  
-  
+
+
 
   /**
    * jsDec
@@ -61,7 +61,7 @@ class lia extends Database
     $res = $this->Dec($str);
     return json_encode($res);
   }
-  
+
   /**
    * Dec
    *
@@ -209,7 +209,7 @@ class lia extends Database
 
     return ['txt' => $this->txt, 'img' => $this->exp, 'ques' => $ques];
   }
-  
+
   /**
    * MemoirUser
    *
@@ -236,7 +236,7 @@ class lia extends Database
       return $this->txt;
     }
   }
-  
+
   /**
    * Genre
    *
@@ -274,7 +274,7 @@ class lia extends Database
 
     return $genre;
   }
-  
+
   /**
    * Appelle
    *
@@ -315,7 +315,7 @@ class lia extends Database
     }
     return 'jolie prénom ' . $this->Sex() . " ";
   }
-  
+
   /**
    * Sex
    *
@@ -335,7 +335,7 @@ class lia extends Database
     }
     return $sex;
   }
-  
+
   /**
    * Calcul
    *
@@ -363,12 +363,12 @@ class lia extends Database
           break;
         case '/':
         case 'divise':
-        case 'diviser par':
+
           $op = $op / floatval($chiffes[0][$i]);
           break;
         case '*':
         case 'multiplie':
-        case 'multiplier par':
+
           $op = $op * floatval($chiffes[0][$i]);
           break;
       }
@@ -381,7 +381,7 @@ class lia extends Database
     }
   }
 
-  
+
   /**
    * ConnaiTu
    *
@@ -407,7 +407,7 @@ class lia extends Database
 
     //return $str;
   }
-  
+
   /**
    * TuEs
    *
@@ -446,7 +446,7 @@ class lia extends Database
         break;
     }
   }
-  
+
   /**
    * AimeTu
    *
@@ -489,7 +489,7 @@ class lia extends Database
         break;
     }
   }
-  
+
   /**
    * vaTu
    *
@@ -506,7 +506,7 @@ class lia extends Database
     $txt = $tex[$p];
     return $txt;
   }
-  
+
   /**
    * Question
    *
@@ -535,7 +535,7 @@ class lia extends Database
 
     return $txt;
   }
-  
+
   /**
    * Reponse
    *
@@ -555,7 +555,7 @@ class lia extends Database
     return $txt;
   }
 
-  
+
   /**
    * Heure
    *
@@ -564,8 +564,9 @@ class lia extends Database
   private function Heure(): string
   {
     // pour donnée heurre
-    date_default_timezone_set('UTC');
-    $heure = round(date("H") + (date("z") / 120), 0);
+   
+    date_default_timezone_set('Europe/Paris');
+    $heure =  date("H");
     $minutes = date('i');
 
     if ($minutes == 0) {
@@ -578,13 +579,13 @@ class lia extends Database
     }
 
     if ($minutes == 15 || $minutes == 30 || $minutes == 45) {
-##message pour les quart d'heurre
+      ##message pour les quart d'heurre
       return  'horloge sonne ' . $heure . ' heure' . $minutes . '';
     }
     return  'il est ' . $heure . ' heure ' . $minutes . '';
   }
 
-  
+
   /**
    * QuiEst
    *
@@ -641,7 +642,7 @@ class lia extends Database
         break;
     }
   }
-  
+
   /**
    * Expretion
    *
@@ -716,7 +717,7 @@ class lia extends Database
 
     return $this->exp = $img;
   }
-  
+
   /**
    * QuiEstTu
    *
@@ -728,7 +729,7 @@ class lia extends Database
     return 'je m\'apelle ' . $this->monNom . ', pour <span class="fw-bold">L</span>\'<span class="fw-bold">I</span>ntiligente <span class="fw-bold">A</span>pli... , je suis la pour vous aider';
   }
 
-  
+
   /**
    * Salutation
    *
@@ -742,23 +743,25 @@ class lia extends Database
 
     $this->str = preg_replace('/^' . $value . ' /', '', $this->str);
     $mess_heure = 'salut';
-    $heure = date("H");
-    if ($heure >= 6 && $heure <= 8) {
+    
+    date_default_timezone_set('Europe/Paris');
+    $heure =  date("H");
+    if ($heure >= 6 && $heure < 8) {
       $mess_heure = "Bon natinée";
     }
-    if ($heure >= 8 && $heure <= 12) {
+    if ($heure >= 8 && $heure < 12) {
       $mess_heure = "Bonjour";
     }
-    if ($heure >= 12 && $heure <= 13) {
+    if ($heure >= 12 && $heure < 13) {
       $mess_heure = "Bon appétit";
     }
-    if ($heure >= 13 && $heure <= 18) {
+    if ($heure >= 13 && $heure < 18) {
       $mess_heure = "Bon après-midi";
     }
-    if ($heure >= 18 && $heure <= 22) {
+    if ($heure >= 18 && $heure < 22) {
       $mess_heure = "Bonsoir";
     }
-    if ($heure >= 22 || $heure <= 6) {
+    if ($heure >= 22 || $heure < 6) {
       $mess_heure = "Bonne nuit";
     }
 
@@ -777,7 +780,7 @@ class lia extends Database
       }
     }
   }
-  
+
   /**
    * Prenom
    *
@@ -791,7 +794,7 @@ class lia extends Database
       return "toi";
     }
   }
-  
+
   /**
    * noAccent
    *
