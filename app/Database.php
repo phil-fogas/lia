@@ -6,7 +6,7 @@
  */
 class Database
 {
-    private $pdo;
+    private ?\PDO $pdo = null;
     private $hostdb;
     private $namedb;
     private $userdb;
@@ -16,6 +16,7 @@ class Database
     public function __construct()
     {
 
+        $config = [];
         require __DIR__ . '/config.php';
         $this->hostdb = $config['connec']['host'];
         $this->namedb = $config['connec']['dbname'];
@@ -93,7 +94,7 @@ class Database
         if (!empty($data)) {
             return $data;
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -108,7 +109,7 @@ class Database
         if (!empty($user)) {
             return $user;
         } else {
-            return array();
+            return [];
         }
     }
 

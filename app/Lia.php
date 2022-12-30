@@ -16,10 +16,8 @@ class lia extends Database
 
   /**
    * txt
-   *
-   * @var mixed
    */
-  private $txt;
+  private ?string $txt = null;
   /**
    * str
    *
@@ -28,10 +26,8 @@ class lia extends Database
   private $str;
   /**
    * monNom
-   *
-   * @var string
    */
-  private $monNom = 'lia';
+  private string $monNom = 'lia';
   /**
    * exp
    *
@@ -59,7 +55,7 @@ class lia extends Database
   public function jsDec(string $str): string
   {
     $res = $this->Dec($str);
-    return json_encode($res);
+    return json_encode($res, JSON_THROW_ON_ERROR);
   }
 
   /**
@@ -217,6 +213,7 @@ class lia extends Database
    */
   private function MemoirUser(): ?string
   {
+    $r = [];
     //pour mémoriée si une question a ete déja posée
     if (!empty($_SESSION['reponse'][$this->str])) {
       if ($_SESSION['reponse'][$this->str] === $this->txt) {
@@ -224,7 +221,7 @@ class lia extends Database
         $r[] = "déja dit, ";
         $r[] = "mmm... ";
         $rc = count($r);
-        $r1 = rand(0, $rc - 1);
+        $r1 = random_int(0, $rc - 1);
 
         return $r[$r1] . $this->txt;
       } else {
@@ -323,6 +320,7 @@ class lia extends Database
    */
   private function Sex(): string
   {
+    $sex = null;
     // pour savoir 
     if (!empty($_SESSION['user']['sex'])) {
       if ($_SESSION['user']['sex'] == 1) {
@@ -350,7 +348,7 @@ class lia extends Database
     preg_match_all('/[-|+|*|\/|plus|mois|multiplie|divise]/', $txt, $signe, PREG_UNMATCHED_AS_NULL);
     $op = floatval($chiffes[0]);
 
-    for ($i = 1; $i < count($chiffes[0]); $i++) {
+    for ($i = 1; $i < (is_countable($chiffes[0]) ? count($chiffes[0]) : 0); $i++) {
 
       switch ($signe[0][$i - 1]) {
         case '+':
@@ -497,12 +495,13 @@ class lia extends Database
    */
   private function vaTu(): string
   {
+    $tex = [];
     $this->Expretion('joyeuse');
     $tex[] = 'ça va bien, tant que j\'arrive a trouver les réponses a vos reponses, et toi, tu vas bien ? ';
     $tex[] = 'ça va, ça vient tant que je reste au courant, et toi comment va tu ?';
     $tex[] = 'ça va bien et bien ou bien ?';
     $ll = count($tex) - 1;
-    $p = rand(0, $ll);
+    $p = random_int(0, $ll);
     $txt = $tex[$p];
     return $txt;
   }
@@ -516,6 +515,7 @@ class lia extends Database
   private function Question(int $i = null): ?string
   {
 
+    $tex = [];
     $this->Expretion('rire');
     if (!empty($i)) {
       $tex[] = 'la réponse n°' . $i . ' est ... (8) (%) (oo) (§) (8), bien relire la reponse ' . $i . ' ';
@@ -527,7 +527,7 @@ class lia extends Database
       }
 
       $ll = count($tex) - 1;
-      $p = rand(0, $ll);
+      $p = random_int(0, $ll);
       $txt = $tex[$p];
     } else {
       $txt = 'heu..., quel est la réponse ? ';
@@ -563,6 +563,7 @@ class lia extends Database
    */
   private function Heure(): string
   {
+    $tex = [];
     // pour donnée heurre
    
     date_default_timezone_set('Europe/Paris');
@@ -574,7 +575,7 @@ class lia extends Database
       $tex[] = 'les cloches';
       $tex[] = 'Les trompettes';
       $ll = count($tex) - 1;
-      $p = rand(0, $ll);
+      $p = random_int(0, $ll);
       return  $tex[$p] . ' sonne les ' . $heure . ' coups';
     }
 
