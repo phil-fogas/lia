@@ -1,5 +1,5 @@
 'use strict';
-
+let lia = document.querySelector('.lia');
 function res(e) {
 
   e.preventDefault();
@@ -18,14 +18,59 @@ function res(e) {
         document.querySelector('.bulle').innerHTML = data.txt;
         document.getElementById('vlia').src = './img/' + data.img;
         document.getElementById('res').value = data.ques;
+        const textLength = data.txt.length;
+        const maxWindowHeight = window.innerHeight;
+        const maxWindowWidth = window.innerWidth;
+        const height = parseInt(textLength);
+        const width = parseInt(textLength);
+        lia.style = `overflow: auto;`;
+
+        if (height > maxWindowHeight) {
+          // lia.style = `overflow: auto;`;
+          lia.style.height = `90%`;
+          lia.style.minWidth = `40%`;
+          lia.style.width = `length`;
+
+        } else if (width > maxWindowWidth) {
+          //lia.style = `overflow: auto;`;
+          lia.style.minHeight = `40%`;
+          lia.style.height = `length`;
+          lia.style.width = `90%`;
+
+        } else {
+
+          if (height > 50) {
+            lia.style.minHeight = `40%`;
+            lia.style.height = `length`;
+
+          } else {
+            lia.style.height = `length`;
+            // lia.style.height = `80%`;
+          }
+          if (width > 50) {
+            lia.style.minWidth = `40%`;
+            lia.style.width = `length`;
+
+          } else {
+            lia.style.width = `length`;
+            // lia.style.width = `80%`;
+          }
+
+        }
       } else {
         document.querySelector('.bulle').innerHTML = '???';
         document.getElementById('vlia').src = './img/neutre.png';
         document.getElementById('res').value =data.ques;
+        lia.style.height = `auto`;
+        lia.style.width = `15%`;
       }
 
     })
-    .catch(error => { document.querySelector('.bulle').innerHTML ="erreure";})
+    .catch(error => { 
+      lia.style.height = `auto`;
+      lia.style.width = `15%`;
+      document.querySelector('.bulle').innerHTML ="erreure";
+  })
     ;
 }
 
