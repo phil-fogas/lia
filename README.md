@@ -7,8 +7,10 @@ version 4
 
 pour les js ajoute de redimention de la bulle selon la taille de la reponse
 separation en deux fichiers 
+
 lia.php => router avec array associatif et apelle de la function
   une trentaine de promt deja prevu
+  
 neuronelia => la logique des reponses delirante
 
 
