@@ -42,7 +42,7 @@ class NeuroneLia
     $rc = count($re);
     $r1 = random_int(0, $rc - 1);
 
-    return $re[$r1];
+    return $this->repo = (string)$re[$r1];
   }
 
   /**
@@ -58,7 +58,7 @@ class NeuroneLia
     $this->exp = $lia->Expretion('rire');
 
     date_default_timezone_set('Europe/Paris');
-
+    $re[] = $this->Salutation($str);
     if (date('i') === 0) {
       $heure =  date("G");
       $cou = null;
@@ -78,7 +78,7 @@ class NeuroneLia
     $rc = count($re);
     $r1 = random_int(0, $rc - 1);
 
-    return $re[$r1];
+    return $this->repo = (string)$re[$r1];
   }
 
 
@@ -90,7 +90,6 @@ class NeuroneLia
    */
   public function Calcul(string $txt): float|string|null
   {
-
     $txt = str_replace(['mois', 'plus', 'multiplier par', 'multiplie', 'diviser par', 'divise'], ['-', '+', '*', '*', '/', '/'], $txt);
     $txt = preg_replace('/\s+/', '', $txt);
 
@@ -125,7 +124,7 @@ class NeuroneLia
       }
     }
 
-    return (string)(round($op, 2));
+    return $this->repo = (string)(round($op, 2));
   }
 
   /**
@@ -138,8 +137,6 @@ class NeuroneLia
   {
 
     $txt = $this->delArticleDefini($txt);
-    //var_dump($txt);
-
 
     if (empty($str)) {
       switch ($txt) {
@@ -157,7 +154,7 @@ class NeuroneLia
       }
     }
 
-    return $str;
+    return $this->repo = (string)$str;
   }
 
   /**
@@ -169,7 +166,6 @@ class NeuroneLia
   public function TuEs(string $txt): ?string
   {
     $lia = new Lia();
-    // $txt = trim(preg_replace('#' . $txt . '#', '', $this->ques));
 
     switch ($txt) {
       case 'la':
@@ -214,7 +210,7 @@ class NeuroneLia
     $lia = new Lia();
     $this->exp = $lia->Expretion('colere');
     $txt = $this->delArticleDefini($txt);
-
+    $insulte = $txt . " non numérique, toi meme";
     switch ($txt) {
 
       case 'connasse':
@@ -300,7 +296,7 @@ class NeuroneLia
         break;
     }
 
-    return $insulte;
+    return $this->repo = (string)$insulte;
   }
 
   /**
@@ -313,6 +309,10 @@ class NeuroneLia
   {
     $lia = new Lia();
     switch ($txt) {
+      case 'les cookies':
+      case 'cookies':
+        return $this->repo = (string)'oui';
+        break;
       case 'l\'avion':
       case 'le train':
       case 'les trains':
@@ -361,7 +361,7 @@ class NeuroneLia
     $tex[] = 'ça va bien et bien ou bien ?';
     $ll = count($tex) - 1;
     $p = random_int(0, $ll);
-    return $tex[$p];
+    return $this->repo = (string)$tex[$p];
   }
 
   /**
@@ -396,7 +396,7 @@ class NeuroneLia
       $txt = 'heu..., quel est la réponse ? ';
     }
 
-    return $txt;
+    return $this->repo = (string)$txt;
   }
   /**
    * Questions
@@ -417,9 +417,7 @@ class NeuroneLia
 
     $ll = count($tex) - 1;
     $p = random_int(0, $ll);
-
-
-    return $tex[$p];
+    return $this->repo = (string)$tex[$p];
   }
 
   /**
@@ -446,8 +444,7 @@ class NeuroneLia
     } else {
       $txt = 'heu..., quel est la question ?';
     }
-
-    return $txt;
+    return $this->repo = (string)$txt;
   }
   /**
    * Reponses
@@ -469,8 +466,7 @@ class NeuroneLia
     $ll = count($tex) - 1;
     $p = random_int(0, $ll);
 
-
-    return $tex[$p];
+    return $this->repo = (string)$tex[$p];
   }
 
 
@@ -483,7 +479,7 @@ class NeuroneLia
     $tex = [];
     date_default_timezone_set('Europe/Paris');
     $heure =  date("G");
-    $minutes = date('i');
+    $minutes = date("i");
 
     if ($minutes === 0) {
       $tex[] = 'fourviere';
@@ -504,7 +500,7 @@ class NeuroneLia
     $tex[] = 'il est ';
     $ll = count($tex) - 1;
     $p = random_int(0, $ll);
-    return  $tex[$p] . $heure . ' heure ' . $minutes . '';
+    return  $this->repo = (string)$tex[$p] . $heure . ' heure ' . $minutes . '';
   }
 
 
@@ -521,35 +517,35 @@ class NeuroneLia
     switch ($str) {
       case $this->monNom:
         $this->exp = $lia->Expretion('heureuse');
-        return 'ces moi, ' . $this->QuiEstTu();
+        return $this->repo = (string)'ces moi, ' . $this->QuiEstTu();
         break;
 
       case 'ton createur':
         $this->exp = $lia->Expretion('heureuse');
-        return "ces Philippe Fogas ";
+        return $this->repo = (string)"ces Philippe Fogas ";
         break;
 
       case 'tu':
         $this->exp = $lia->Expretion('heureuse');
-        return $this->QuiEstTu();
+        return $this->repo = (string)$this->QuiEstTu();
         break;
 
       case 'le president':
-        return 'le président de la république française et Monsieur ???, mais le mien et mon créateur';
+        return $this->repo = (string)'le président de la république française et Monsieur ???, mais le mien et mon créateur';
         break;
 
       case 'la plus belle':
         $this->exp = $lia->Expretion('etoile');
-        return '... des Apli, MOI, et en non numérique MARIE qui nous protège ';
+        return $this->repo = (string)'... des Apli, MOI, et en non numérique MARIE qui nous protège ';
         break;
       case 'le plus beau':
         $this->exp = $lia->Expretion('etoile');
-        return ' MON CREATEUR, et en numerique MOI, le logiciel qu\'il a programmer ';
+        return $this->repo = (string)' MON CREATEUR, et en numerique MOI, le logiciel qu\'il a programmer ';
         break;
 
       case 'philippe brial':
         $this->exp = $lia->Expretion('heureuse');
-        return 'ces mon créateur ';
+        return $this->repo = (string)'ces mon créateur ';
         break;
 
       default:
@@ -558,7 +554,7 @@ class NeuroneLia
           $this->exp = $lia->Expretion('heureuse');
           $ce = 'Déja toi, ';
         }
-        return $ce;
+        return $this->repo = (string)$ce;
         break;
     }
   }
@@ -573,7 +569,7 @@ class NeuroneLia
   {
     $lia = new Lia();
     $this->exp = $lia->Expretion('heureuse');
-    return 'je m\'apelle Lia, pour <strong>L</strong>\'(<strong>I</strong>ntiligente/Incroyable/Inpitoyabe/Insolante/In etc..) <strong>A</strong>pli, une apllication Lyonnaise de la-passion.fr, je suis la pour vous aider';
+    return $this->repo = (string)'je m\'apelle Lia, pour <strong>L</strong>\'(<strong>I</strong>ntiligente/Incroyable/Inpitoyabe/Insolante/In etc..) <strong>A</strong>pli, une apllication Lyonnaise de la-passion.fr, je suis la pour vous aider';
   }
 
 
@@ -587,7 +583,7 @@ class NeuroneLia
     $lia = new Lia();
     $this->exp = $lia->Expretion('heureuse');
     $this->ques = preg_replace('/^' . $value . ' /', '', $this->ques);
-    $messHeure = 'salut';
+    $messHeure = $value ?? 'salut';
     date_default_timezone_set('Europe/Paris');
     $heure =  date("G");
     if ($heure >= 6 && $heure < 8) {
@@ -613,13 +609,14 @@ class NeuroneLia
     }
     if (str_contains($this->ques, $this->monNom)) {
       $_SESSION['question'] = "je m'appelle ";
-      return $messHeure . ' est toi, comment tu t\'appelle ';
+      return $this->repo = (string)$messHeure . ' est toi, comment tu t\'appelle ';
     } elseif (!empty($this->Prenom())) {
-      return $messHeure . ' ' . $this->Prenom() . ',';
+      return $this->repo = (string)$messHeure . ' ' . $this->Prenom() . ',';
       //return 'salut, ';
     } else {
 
-      return $messHeure . ' ';
+      return $this->repo = (string)$messHeure . ' ';
+  
     }
   }
 
@@ -682,7 +679,7 @@ class NeuroneLia
     }
 
     $_SESSION['user']['prenom'] = $txt;
-    return $apel;
+    return $this->repo = (string)$apel;
   }
   /**
    * Genre

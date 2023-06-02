@@ -3,7 +3,10 @@ lia est un agent conversationnel tres sinple
 
 exemple d'un agent conversationnel sans base de donnee
 
- # Version 1.4
+# Version 1.5
+ammelioration de neuronelia
+
+# Version 1.4
 
 pour les js ajoute de redimention de la bulle selon la taille de la reponse
 separation en deux fichiers 

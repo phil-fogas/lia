@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once 'NeuroneLia.php';
 /**
  * @author fogas fogasy 
- * @version 1.4
+ * @version 1.5
  * @access public
  */
 
@@ -14,12 +14,8 @@ class Lia
   public ?string $repo = null;
   public string|null|array $ques = null;
   public string $monNom = 'lia';
-  /**
-   * exp
-   *
-   * @var mixed
-   */
   public $exp;
+
 
   public function __construct()
   {
@@ -39,7 +35,7 @@ class Lia
   public function jsDec(string $str): string
   {
     $res = $this->Dec($str);
-    return json_encode($res, JSON_THROW_ON_ERROR);
+    return json_encode($res, JSON_OBJECT_AS_ARRAY);
   }
 
   /**
@@ -50,7 +46,7 @@ class Lia
    */
   public function Dec(string $str): array
   {
-    $tex = [];
+    
     $neuron = new NeuroneLia();
     $str = $this->noAccent($str);
     $str = preg_replace('/[,;:?!]/i', '', $str);
@@ -108,7 +104,7 @@ class Lia
         $str = trim(preg_replace('#' . $keyword . '#', '', $this->ques));
         $m = $function[1];
         $str2 = str_word_count($keyword, 1)[0] ?? null;
-        $this->repo = call_user_func_array([$neuron, $function[0]], [$str, $str2]);
+        call_user_func_array([$neuron, $function[0]], [$str, $str2]);
         if (!empty($neuron->exp)) {
           $this->exp = $neuron->exp;
         }
@@ -117,13 +113,13 @@ class Lia
       }
     }
 
-    if (!empty($this->txt) && empty($this->exp)) {
+    if (!empty($this->repo) && empty($this->exp)) {
 
       $this->exp = $this->Expretion('parle');
     }
 
-    if (!empty($this->txt)) {
-      $this->txt = $this->MemoirUser();
+    if (!empty($this->repo) && empty($_SESSION['reponse'][$this->ques]) && !empty($m)) {
+      $this->setMemoirUser();
     }
 
     if (!empty($_SESSION['question'])) {
@@ -133,6 +129,17 @@ class Lia
     }
 
     return ['txt' => $this->repo, 'img' => $this->exp, 'ques' => $ques];
+  }
+
+    /**
+   * garde en mémoire du coter utilisateur
+   *setMemoirUser
+   * @return void
+   */
+  private function setMemoirUser()
+  {
+    $_SESSION['reponse']['fois'][$this->ques] = 1;
+    $_SESSION['reponse'][$this->ques] = $this->repo;
   }
 
   /**
@@ -163,79 +170,36 @@ class Lia
     return null;
   }
 
-
-
-  /**
+/**
    * Expretion
-   *
+   *expretion du visage
    * @param  mixed $exp
-   * @return string
    */
   public function Expretion(string $exp = null): string
   {
 
-    switch ($exp) {
-      case 'ennuie':
-        $img = 'ennuie.png';
-        break;
-      case 'parle':
-        $img = 'parle.png';
-        break;
-      case 'etoile':
-        $img = 'etoile.png';
-        break;
-      case 'horor':
-        $img = 'horor.png';
-        break;
-      case 'pleur':
-        $img = 'pleur.png';
-        break;
-      case 'colere':
-        $img = 'colere.png';
-        break;
-      case 'dort':
-        $img = 'dort.png';
-        break;
-      case 'enerve':
-        $img = 'enerve.png';
-        break;
-      case 'heureuse':
-        $img = 'heureuse.png';
-        break;
-      case 'ho':
-        $img = 'ho.png';
-        break;
-      case 'interrogation':
-        $img = 'interrogation.png';
-        break;
-      case 'joyeuse':
-        $img = 'joyeuse.png';
-        break;
-      case 'morte':
-        $img = 'morte.png';
-        break;
-      case 'navre':
-        $img = 'navre.png';
-        break;
-      case 'peur':
-        $img = 'peur.png';
-        break;
-      case 'repos':
-        $img = 'repos.png';
-        break;
-      case 'rire':
-        $img = 'rire.png';
-        break;
-      case 'surpris':
-        $img = 'surpris.png';
-        break;
-      case 'triste':
-        $img = 'triste.png';
-        break;
-      default:
-        $img = 'neutre.png';
-        break;
-    }
+    $img = match ($exp) {
+      'ennuie' => 'ennuie.png',
+      'parle' => 'parle.png',
+      'etoile' => 'etoile.png',
+      'horor' => 'horor.png',
+      'pleur' => 'pleur.png',
+      'colere' => 'colere.png',
+      'dort' => 'dort.png',
+      'enerve' => 'enerve.png',
+      'heureuse' => 'heureuse.png',
+      'ho' => 'ho.png',
+      'interrogation' => 'interrogation.png',
+      'joyeuse' => 'joyeuse.png',
+      'morte' => 'morte.png',
+      'navre' => 'navre.png',
+      'peur' => 'peur.png',
+      'repos' => 'repos.png',
+      'rire' => 'rire.png',
+      'surpris' => 'surpris.png',
+      'triste' => 'triste.png',
+      default => 'neutre.png',
+    };
 
     return $this->exp = $img;
   }
